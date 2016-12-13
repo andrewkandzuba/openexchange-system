@@ -1,0 +1,20 @@
+---
+applications:
+- name:  ${project.groupId}:${project.artifactId}:${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}
+  host:  ${project.artifactId}-${parsedVersion.majorVersion}-${parsedVersion.minorVersion}-${parsedVersion.incrementalVersion}
+  memory: 512M
+  disk_quota: 1G
+  instances: 1
+  path: ${project.artifactId}-${project.version}.jar
+  buildpack: https://github.com/cloudfoundry/java-buildpack
+services:
+  - eureka-service
+  - rabbitmq-cloud-amqp
+env:
+  JBP_CONFIG_OPEN_JDK_JRE: '[jre: {version: 1.8.0_+}, memory_calculator: {memory_heuristics: {heap: 85, stack: 10}}]'
+  spring.cloud.config.server.git.uri: https://github.com/andrewkandzuba/openexchange-configuration.git
+  security.user.password: changeit
+  eureka.instance.metadataMap.user: user
+  eureka.instance.metadataMap.password: changeit
+  eureka.instance.nonSecurePort: 80
+  spring.cloud.config.server.monitor.github.enabled: true
