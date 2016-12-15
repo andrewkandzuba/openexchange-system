@@ -15,7 +15,7 @@
     <name>openexchange ::: ${project.artifactId}</name>
 
     <properties>
-        <docker.host.address>192.168.99.100</docker.host.address>
+        <docker.host.address>docker-host-network</docker.host.address>
         <registry.server.port>8761</registry.server.port>
         <configuration.server.port>8888</configuration.server.port>
         <configuration.server.user>user</configuration.server.user>
@@ -141,8 +141,8 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>start</id>
-                        <phase>pre-integration-test</phase>
+                        <id>docker</id>
+                        <phase>package</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
