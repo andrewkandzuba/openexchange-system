@@ -14,11 +14,6 @@
 
     <name>openexchange ::: ${project.artifactId}</name>
 
-    <properties>
-        <docker.host.address>docker-host-network</docker.host.address>
-        <regestry.server.port>8761</regestry.server.port>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -95,18 +90,13 @@
                                                     <include>${project.groupId}:registry:jar:${project.version}
                                                     </include>
                                                 </includes>
-                                                <outputFileNameMapping>app.jar</outputFileNameMapping>
+                                                <outputFileNameMapping>registry.jar</outputFileNameMapping>
                                             </dependencySet>
                                         </dependencySets>
                                     </inline>
                                 </assembly>
                                 <entryPoint>
-                                    <shell>java -server -ea \
-                                        -XX:+AggressiveOpts -Xms512M -Xmx2G \
-                                        -Djava.security.egd=file:/dev/urandom \
-                                        -Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${regestry.server.port} \
-                                        -jar /maven/app.jar
-                                    </shell>
+                                    <shell>java $JAVA_OPTS -Djava.security.egd=file:/dev/urandom -jar /maven/registry.jar</shell>
                                 </entryPoint>
                             </build>
                         </image>

@@ -14,15 +14,6 @@
 
     <name>openexchange ::: ${project.artifactId}</name>
 
-    <properties>
-        <docker.host.address>docker-host-network</docker.host.address>
-        <registry.server.port>8761</registry.server.port>
-        <configuration.server.port>8888</configuration.server.port>
-        <configuration.server.user>user</configuration.server.user>
-        <configuration.server.password>changeit</configuration.server.password>
-        <configuration.server.git.repo>https://github.com/andrewkandzuba/openexchange-configuration.git</configuration.server.git.repo>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -116,24 +107,13 @@
                                                     <include>${project.groupId}:configserver:jar:${project.version}
                                                     </include>
                                                 </includes>
-                                                <outputFileNameMapping>app.jar</outputFileNameMapping>
+                                                <outputFileNameMapping>configserver.jar</outputFileNameMapping>
                                             </dependencySet>
                                         </dependencySets>
                                     </inline>
                                 </assembly>
                                 <entryPoint>
-                                    <shell>java ${env.JAVA_OPTS} -server -ea -XX:+AggressiveOpts -Xms512M -Xmx2G \
-                                        -Djava.security.egd=file:/dev/urandom \
-                                        -Dspring.rabbitmq.host=${docker.host.address} \
-                                        -Dspring.cloud.config.server.git.uri=${configuration.server.git.repo} \
-                                        -Dsecurity.user.password=${configuration.server.password} \
-                                        -Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port} \
-                                        -Deureka.instance.hostname=${docker.host.address} \
-                                        -Deureka.instance.nonSecurePort=${configuration.server.port} \
-                                        -Deureka.instance.metadataMap.user=${configuration.server.user} \
-                                        -Deureka.instance.metadataMap.password=${configuration.server.password} -jar \
-                                        /maven/app.jar
-                                    </shell>
+                                    <shell>java $JAVA_OPTS -Djava.security.egd=file:/dev/urandom -jar /maven/configserver.jar</shell>
                                 </entryPoint>
                             </build>
                         </image>
