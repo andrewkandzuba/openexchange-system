@@ -1,4 +1,4 @@
-package org.openexchange;
+package io.openexchange;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
