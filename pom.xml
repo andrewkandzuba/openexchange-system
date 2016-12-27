@@ -14,7 +14,7 @@
 
     <name>openexchange ::: ${project.artifactId}</name>
 
-    <!-- scm>
+    <scm>
         <connection>
             https://github.com/andrewkandzuba/${project.artifactId}.git
         </connection>
@@ -22,7 +22,7 @@
             scm:git:[fetch=]https://github.com/andrewkandzuba/${project.artifactId}.git[push=]git@github.com:andrewkandzuba/${project.artifactId}.git
         </developerConnection>
         <tag>HEAD</tag>
-    </scm -->
+    </scm>
 
     <modules>
         <module>registry</module>
