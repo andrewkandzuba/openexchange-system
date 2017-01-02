@@ -1,0 +1,79 @@
+version: '2'
+services:
+  rabbit:
+    image: rabbitmq:3-management
+    network_mode: "host"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  registry:
+    image: openexchange/registry:latest
+    network_mode: "host"
+    ports:
+      - "8761:8761"
+    environment:
+      JAVA_OPTS: |
+        -server
+        -ea
+        -Xms64m
+        -Xmx128m
+        -XX:MaxMetaspaceSize=64m
+        -Xmn16m -XX:SurvivorRatio=8
+        -XX:TargetSurvivorRatio=50
+        -XX:+UseConcMarkSweepGC
+        -XX:+CMSParallelRemarkEnabled
+        -verbose:gc
+        -XX:+PrintGCDetails
+    depends_on:
+      - rabbit
+  configserver:
+    image: openexchange/configserver:latest
+    network_mode: "host"
+    ports:
+      - "8888:8888"
+    environment:
+      JAVA_OPTS: |
+        ${JAVA_OPTS}
+        -server
+        -ea
+        -Xms64m
+        -Xmx128m
+        -XX:MaxMetaspaceSize=64m
+        -Xmn16m
+        -XX:SurvivorRatio=8
+        -XX:TargetSurvivorRatio=50
+        -XX:+UseConcMarkSweepGC
+        -XX:+CMSParallelRemarkEnabled
+        -verbose:gc
+        -XX:+PrintGCDetails
+        -Dspring.cloud.config.server.git.uri=https://github.com/andrewkandzuba/openexchange-configuration.git
+        -Dsecurity.user.password=changeit
+        -Deureka.instance.hostname=192.168.99.100
+        -Deureka.instance.nonSecurePort=8888
+        -Deureka.instance.metadataMap.user=user
+        -Deureka.instance.metadataMap.password=changeit
+    depends_on:
+      - registry
+  gateway:
+    image: openexchange/gateway:latest
+    network_mode: "host"
+    ports:
+      - "8101:8101"
+    environment:
+      JAVA_OPTS: |
+        -server
+        -ea
+        -Xms64m
+        -Xmx128m
+        -XX:MaxMetaspaceSize=64m
+        -Xmn16m -XX:SurvivorRatio=8
+        -XX:TargetSurvivorRatio=50
+        -XX:+UseConcMarkSweepGC
+        -XX:+CMSParallelRemarkEnabled
+        -verbose:gc
+        -XX:+PrintGCDetails
+        -Deureka.instance.hostname=192.168.99.100
+        -Deureka.instance.nonSecurePort=8101
+    depends_on:
+      - configserver
+    restart: always

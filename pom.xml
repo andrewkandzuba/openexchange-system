@@ -27,6 +27,7 @@
     <modules>
         <module>registry</module>
         <module>configserver</module>
+        <module>gateway</module>
     </modules>
 
 </project>
