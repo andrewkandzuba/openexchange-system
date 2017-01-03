@@ -46,12 +46,8 @@ services:
         -XX:+CMSParallelRemarkEnabled
         -verbose:gc
         -XX:+PrintGCDetails
-        -Dspring.cloud.config.server.git.uri=https://github.com/andrewkandzuba/openexchange-configuration.git
-        -Dsecurity.user.password=changeit
-        -Deureka.instance.hostname=192.168.99.100
-        -Deureka.instance.nonSecurePort=8888
-        -Deureka.instance.metadataMap.user=user
-        -Deureka.instance.metadataMap.password=changeit
+        -Dspring.cloud.config.server.git.uri=${GIT_CONFIG_URL}
+        -Dsecurity.basic.enabled=false
     depends_on:
       - registry
   gateway:
@@ -72,8 +68,6 @@ services:
         -XX:+CMSParallelRemarkEnabled
         -verbose:gc
         -XX:+PrintGCDetails
-        -Deureka.instance.hostname=192.168.99.100
-        -Deureka.instance.nonSecurePort=8101
     depends_on:
       - configserver
     restart: always
