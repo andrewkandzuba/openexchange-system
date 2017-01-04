@@ -44,7 +44,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>**/bootstrap.yml</include>
-                    <include>**/logback-spring.xml</include>
+                    <include>**/logback.xml</include>
                 </includes>
             </resource>
             <resource>

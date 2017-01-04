@@ -4,13 +4,13 @@ services:
     image: rabbitmq:3-management
     network_mode: "host"
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - 5672:5672
+      - 15672:15672
   registry:
     image: openexchange/registry:latest
     network_mode: "host"
     ports:
-      - "8761:8761"
+      - 8761:8761
     environment:
       JAVA_OPTS: |
         -server
@@ -30,7 +30,7 @@ services:
     image: openexchange/configserver:latest
     network_mode: "host"
     ports:
-      - "8888:8888"
+      - 8888:8888
     environment:
       JAVA_OPTS: |
         ${JAVA_OPTS}
@@ -46,15 +46,13 @@ services:
         -XX:+CMSParallelRemarkEnabled
         -verbose:gc
         -XX:+PrintGCDetails
-        -Dspring.cloud.config.server.git.uri=${GIT_CONFIG_URL}
-        -Dsecurity.basic.enabled=false
     depends_on:
       - registry
   gateway:
     image: openexchange/gateway:latest
     network_mode: "host"
     ports:
-      - "8101:8101"
+      - 8100:8100
     environment:
       JAVA_OPTS: |
         -server
