@@ -18,3 +18,4 @@ services:
         -XX:+CMSParallelRemarkEnabled
         -verbose:gc
         -XX:+PrintGCDetails
+    restart: always
