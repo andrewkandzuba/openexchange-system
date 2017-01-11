@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.openexchange</groupId>
         <artifactId>openexchange-boot-starter-parent</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4-SNAPSHOT</version>
     </parent>
 
     <artifactId>openexchange-system</artifactId>
@@ -28,6 +28,7 @@
         <module>registry</module>
         <module>configserver</module>
         <module>gateway</module>
+        <module>benchmark</module>
     </modules>
 
 </project>
