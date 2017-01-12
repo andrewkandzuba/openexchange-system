@@ -16,8 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.metrics.Metric;
-import org.springframework.boot.actuate.metrics.repository.MetricRepository;
+import org.springframework.boot.actuate.metrics.rich.RichGaugeRepository;
 import org.springframework.boot.actuate.metrics.writer.Delta;
+import org.springframework.boot.actuate.metrics.writer.MetricWriter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -36,14 +37,14 @@ public class HttpLoadRunner {
     private final static Logger logger = LoggerFactory.getLogger(HttpLoadRunner.class);
 
     private final HttpLoadRunnerConfiguration config;
-    private final MetricRepository metricRepository;
+    private final MetricWriter metricWriter;
     private final FutureRequestExecutionService[] futureExecutors;
     private final ApplicationContext appContext;
 
     @Autowired
-    public HttpLoadRunner(HttpLoadRunnerConfiguration config, MetricRepository metricRepository, ApplicationContext appContext) {
+    public HttpLoadRunner(HttpLoadRunnerConfiguration config, RichGaugeRepository metricWriter, ApplicationContext appContext) {
         this.config = config;
-        this.metricRepository = metricRepository;
+        this.metricWriter = metricWriter;
         this.futureExecutors = new FutureRequestExecutionService[config.getUris().length];
         for (int i = 0; i < futureExecutors.length; i++)
             this.futureExecutors[i] = new FutureRequestExecutionService(create(), Executors.newFixedThreadPool(config.getConcurrency()));
@@ -101,22 +102,22 @@ public class HttpLoadRunner {
                 new FutureCallback<Boolean>() {
                     @Override
                     public void completed(Boolean aBoolean) {
-                        metricRepository.set(new Metric<Number>(serverId + ".activeConnectionCount", futuresExecutor.metrics().getActiveConnectionCount()));
-                        metricRepository.set(new Metric<Number>(serverId + ".taskAverageDuration", futuresExecutor.metrics().getTaskAverageDuration()));
-                        metricRepository.set(new Metric<Number>(serverId + ".requestAverageDuration", futuresExecutor.metrics().getRequestAverageDuration()));
-                        metricRepository.increment(new Delta<Number>(serverId + ".successfulRequests", 1));
+                        metricWriter.set(new Metric<Number>(serverId + ".activeConnectionCount", futuresExecutor.metrics().getActiveConnectionCount()));
+                        metricWriter.set(new Metric<Number>(serverId + ".taskAverageDuration", futuresExecutor.metrics().getTaskAverageDuration()));
+                        metricWriter.set(new Metric<Number>(serverId + ".requestAverageDuration", futuresExecutor.metrics().getRequestAverageDuration()));
+                        metricWriter.set(new Delta<Number>(serverId + ".successfulRequests", 1));
                         latch.countDown();
                     }
 
                     @Override
                     public void failed(Exception e) {
-                        metricRepository.increment(new Delta<Number>(serverId + ".failedRequests", 1));
+                        metricWriter.set(new Delta<Number>(serverId + ".failedRequests", 1));
                         latch.countDown();
                     }
 
                     @Override
                     public void cancelled() {
-                        metricRepository.increment(new Delta<Number>(serverId + ".failedRequests", 1));
+                        metricWriter.set(new Delta<Number>(serverId + ".failedRequests", 1));
                         latch.countDown();
                     }
                 }
