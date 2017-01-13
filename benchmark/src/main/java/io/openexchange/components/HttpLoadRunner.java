@@ -1,6 +1,7 @@
 package io.openexchange.components;
 
 import io.openexchange.configurations.HttpLoadRunnerConfiguration;
+import io.openexchange.statistics.MetricsService;
 import org.apache.http.HeaderElement;
 import org.apache.http.HeaderElementIterator;
 import org.apache.http.client.HttpClient;
@@ -14,7 +15,6 @@ import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.metrics.Metric;
 import org.springframework.boot.actuate.metrics.rich.RichGaugeRepository;
 import org.springframework.boot.actuate.metrics.writer.Delta;
@@ -40,15 +40,17 @@ public class HttpLoadRunner {
     private final MetricWriter metricWriter;
     private final FutureRequestExecutionService[] futureExecutors;
     private final ApplicationContext appContext;
+    private final MetricsService metricsService;
 
     @Autowired
-    public HttpLoadRunner(HttpLoadRunnerConfiguration config, RichGaugeRepository metricWriter, ApplicationContext appContext) {
+    public HttpLoadRunner(HttpLoadRunnerConfiguration config, RichGaugeRepository metricWriter, ApplicationContext appContext, MetricsService metricsService) {
         this.config = config;
         this.metricWriter = metricWriter;
         this.futureExecutors = new FutureRequestExecutionService[config.getUris().length];
         for (int i = 0; i < futureExecutors.length; i++)
             this.futureExecutors[i] = new FutureRequestExecutionService(create(), Executors.newFixedThreadPool(config.getConcurrency()));
         this.appContext = appContext;
+        this.metricsService = metricsService;
     }
 
     @PostConstruct
@@ -57,7 +59,6 @@ public class HttpLoadRunner {
         new Thread(() -> {
             try {
                 logger.info("Run test");
-
                 for (int r = 0; r < config.getRounds(); r++) {
                     CountDownLatch latch = new CountDownLatch(config.getConcurrency());
                     for (int c = 0; c < config.getConcurrency(); c++){
@@ -78,7 +79,12 @@ public class HttpLoadRunner {
 
     @PreDestroy
     private void destroy() {
-        logger.info("Stopping load runner...");
+        logger.info("Load runner has been stopped");
+    }
+
+    private void initiateShutdown() {
+        logger.info("Shitting down execution services...");
+        metricsService.destroy();
         for (FutureRequestExecutionService futureExecutor : futureExecutors) {
             try {
                 futureExecutor.close();
@@ -86,11 +92,6 @@ public class HttpLoadRunner {
                 logger.error(e.getMessage(), e);
             }
         }
-        logger.info("Load runner has been stopped");
-    }
-
-    private void initiateShutdown() {
-        SpringApplication.exit(appContext, () -> 0);
     }
 
     private void scheduleRequestTo(final FutureRequestExecutionService futuresExecutor, final URI host, final CountDownLatch latch) {
