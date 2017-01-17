@@ -1,8 +1,28 @@
-sudo: required
-
 language: java
 jdk:
   - oraclejdk8
 
-services:
-  - docker
+env:
+  global:
+    - secure: "nuSEhgRDa6PbRcvB547bkfWjIUSWR4Xn7LQURVoHkrC9RtL7O3nRiHV6G/WFerx0OjY56QMpMW3/ClGEQBoKgVbL5Dw8UDDlgwSM+IOAFfo1uoUtpDe3ylK2H31iQvCqVhQq/cZtSZMkrU6Qz8qQnw1Q3LB0lODUGcpCm1wPh1eQFNIRChta1DfcPI1w9YchmdyUT8hQLbL03wEVNwRio3an/RD2fg/k+c5P44FIk/+f4N9CB4Te3ZZT5ZMMQ9VcgeQE0rp+DCX+dJXHN52ups8rjD1kn6Piyx6CjvAcUeWya55UexFBeEGbvYroEBIwT25f7gBHJsiXsUq7f/9kUG9o8B8a+TCVSox7hUBfSvo+d7c+F17ynSjLyFKumV9xTjM+BA+Wd8NAOTua4r5agTIMK4EV3ZQejpwGFE2gvVuTClAUG9hmBgLa9zI2uL7MkGGypt3lsnPIkqKG5jPgXECmWXUkvdAT0KKC1dA6BOzKoiYI99D4lEoGW3h/IOtsV1oBvblYkkQCHUXmf83QP0toBJjKE1XZfNUX1jRCY1j+VXbxkiUCMkYSZ1HNKsQtQYu1TYRIokxLt29U7xmqegbrat2+qFP1JjUhYOM/pXIBvZLJV5+LKtmUxlJJiNtdD2DNoLnLkTYYJsSik+FGIKH4UZ5BriGeG8C+JsE+LPg="
+      # ^^ OSSRH_JIRA_USERNAME
+    - secure: "exraDAqcHMbnNHlmYMbB2MwTj1VoelqmrQFcjiiVGYg5qhDK9CwxusL0IYMbrXxy0gu35jaTWOM5sGLsExgiek7LauZn5hHaTrPPbqOdvlkGsHPTKW5BB2tV6KntDXKbtnkfpw1iHqrtsRYrypFR6LCxylce7/Oa/LlEjGL3hVdmWD09jAc7GZPqzygZwqj93KGLf6Oar+1qTrEH7EbOwA9ObhNEUQo5jEloaUioolbQ23tF8hY+QerWJX5u2ANi7ruiE/d7JY3KGtHKNMvt103aX9iKl3ZGbmEulrZC0IpnunhNIKzJ5nrKXMV7eKo3z0QeyXCGoyLQL0ytu9UEFoO3mbfmyOCb1dSQgQt61DKNK0cv+WVnSo4qGJxeZNP2RTBmayrmO4pDswI/SvxpHfWZrkKp/TLxJXSrI+8Ydlm3fWs9w9tD4NRqchAjGFPEAKloVTP/hYC9P/hwEMF+WjqYpoa9m0j4Vi60aiNAesOlNSvb/HT1irmunfZvCvN7Iq8ONY0NJm/S/he4sJ41YSbpZdjcTAn8uP9FhmylR+/DeU8OeLG9JIqPp5oWSA37f+L1Ow9z7l5F0UWcq/+5HiU+oy1CIjZ5JvjNOatvR9q4E/D14BSurZeb2sJJt2j3VA0RKCB8yi9qS9/dxqXnFKJwSPuQAnXeJQ1wdsUwFlY="
+      # ^^ OSSRH_JIRA_PASSWORD
+    - secure: "iiya3LcO2wjIn+wgeaT6581q/Q98jf8V7qCSle3SWD8+bO2ZBWMGpNc1oNcHtvG6bp+S9iuoh6M6smdcU13wHe3TYqD9sZEDI4oBguG4H2YvxVdrXoMSXHHfvhUHnXC2zxQSjovh9GA3eNKfytvZOgCnPWTN4uJJP0vQRHADP067va8D7k4lgWzMjyB0TBserSiu92RwZwn6v79p/FpGAcJh2xqOvzVpL2PGy6sL0MOsz+iCZUkKuZuZZCtEXQ0cnMhSkMytiBLtBsItEFontvk+yBqNkNzRUTHMFp5aKt/koJNzKPL75flzr86AuAbZORvAq0bHMCjETzuLRK91gUtEzlhX48DlFzQnF+GliKe3TuEbMW3UAvQHDPS5jn/16OyTy9atM1pX3jstiGLpBIHxJDAFWDjPsuPf0FDSnd2YoZyT4FKEwMTGYjKYE7CuKt4ianoeluFOS2m176aC1fbfwSgHqV1D08WjJANQNU2/k3FDhlvdEnLckfHUIHmnnHqzUk6MnlsUplF7Vi80qTtA3/T5Xk8DjxujAV3tlYwvXjEkYCQhpb8Q3hNx+mQG2X+wCjkB0y+Ria3UxjByW3MJa0nNLMO/OU41St/VbO/HrS08xZ1WW17+AsxE8rfaj3pALj9d209l8pmaO3wWDq/RE2fUqwmbgYmN8uF2eTc="
+      # ^^ GPG_KEY_NAME
+    - secure: "DV+vO47zu+8/ruQOekY+7z1scZW9iiF2cVT8lNQRl+GQG0hx8e5J+fg0L0mo3z9aLp4/c/xkhs4kWCgpaYTIAPTc9RU9nF8YYdKoeBcGGECIKm9tffydheWNzcwGewD+c0uLl3ugz+3w4Yy+pSY0Wu1n1j8XA1Yd0moR4T8uM0RyoVQ2oSNHfMt/orbsfVutXWhA2AW7XndrqOsgrSckFWk7peOYadndby/YpHYPYxraCR6GmU7Kz5JpXrKxnl2glnusMDpn++x120sJyYbK6S9DuTEyJWIGiGO7HrtiYTILXRMen/5y/Of8jdScuXNztV3VXzAOKIta67noK9G41CEJnpHVWJi1/W5ze35/sv9vFg1Zz0Lw6llsqyyrtrRSZxHMQAlLE64+MrZUw3evU4opi7tfPLAIaFK53Qo1BU12T+IY6+rjLJDcEnTFT4w8lY7TevgG4rf2LPrWCKYdQWjjE+T/i9PSocVpNmfVs+oi69QDMJpgLCMHfsyManBum6XbV5kcHMGsZtliRBgE+guMSc0KZ/evfgyUZFfdUFFzvMepk3JYr2vF0LyvPXow8BMbo7u6b6w3DokTyEiI+oBl+kxV5AfXWxx5+Iw9VndVL7PK2JkQDbKUSuiPOjGMs3Xl3waDJnSTWMcNn0DIdxBP/NfI2qT1svKJ3jmuhQE="
+      # ^^ GPG_PASSPHRASE
+
+before_install:
+  - chmod +x ./cd/before-deploy.sh
+  - chmod +x ./cd/deploy.sh
+install: mvn install -P !build-extras -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+script: mvn test -P !build-extras -B
+
+cache:
+  directories:
+    - ~/.m2/repository
+
+after_success:
+  - ./cd/before-deploy.sh
+  - ./cd/deploy.sh
