@@ -18,7 +18,7 @@
         <dependency>
             <groupId>io.openexchange</groupId>
             <artifactId>openexchange-boot-metrics</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -55,10 +55,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
